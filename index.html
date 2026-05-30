@@ -138,9 +138,27 @@
         </div>
         <div id="error-msg" class="error-msg" style="display:none"></div>
         <button class="btn-bayar" id="btn-bayar" onclick="prosesBayar()">
-          <span id="btn-text">🔒 Bayar Sekarang</span>
-          <span id="btn-loader" style="display:none">⏳ Memproses...</span>
-        </button>
+  🤲 Konfirmasi Infaq
+</button>
+
+<div id="info-rekening" style="display:none;margin-top:1rem;background:#E1F5EE;border:1px solid #5DCAA5;border-radius:12px;padding:1.25rem">
+  <div style="font-weight:500;color:#085041;margin-bottom:12px">📋 Informasi Transfer</div>
+  <div style="font-size:13px;color:#0F6E56;margin-bottom:6px">Silakan transfer ke salah satu rekening berikut:</div>
+  <div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:8px;font-size:13px">
+    <div style="font-weight:500">Bank BSI</div>
+    <div style="font-family:monospace;font-size:15px;color:#085041;margin:4px 0">7081234567</div>
+    <div style="color:#6b7280">a.n. Yayasan Masjid Al-Hikmah</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:12px;font-size:13px">
+    <div style="font-weight:500">Bank BCA</div>
+    <div style="font-family:monospace;font-size:15px;color:#085041;margin:4px 0">1234567890</div>
+    <div style="color:#6b7280">a.n. Yayasan Masjid Al-Hikmah</div>
+  </div>
+  <div style="font-size:13px;color:#085041;margin-bottom:10px">Setelah transfer, kirim bukti via WhatsApp:</div>
+  <a id="wa-btn" href="#" target="_blank" style="display:block;background:#25D366;color:#fff;text-align:center;padding:12px;border-radius:8px;text-decoration:none;font-weight:500;font-size:14px">
+    📱 Kirim Bukti via WhatsApp
+  </a>
+</div>
         <div class="payment-logos">
           <span>Pembayaran aman via</span>
           <span class="pay-badge">Transfer Bank</span>

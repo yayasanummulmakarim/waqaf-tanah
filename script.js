@@ -34,11 +34,9 @@ updateSummary();
 
 function validasiForm() {
   const nama = document.getElementById("nama").value.trim();
-  const email = document.getElementById("email").value.trim();
   const telepon = document.getElementById("telepon").value.trim();
   if (nominalDipilih < 5000) { tampilError("Nominal infaq minimal Rp 5.000."); return false; }
   if (!nama) { tampilError("Nama lengkap wajib diisi."); return false; }
-  if (!email || !email.includes("@")) { tampilError("Masukkan alamat email yang valid."); return false; }
   if (!telepon) { tampilError("Nomor WhatsApp wajib diisi."); return false; }
   sembunyikanError();
   return true;
@@ -55,48 +53,23 @@ function sembunyikanError() {
   document.getElementById("error-msg").style.display = "none";
 }
 
-async function prosesBayar() {
+function prosesBayar() {
   if (!validasiForm()) return;
+
   const programEl = document.querySelector('input[name="program"]:checked');
   const program = programEl ? programEl.value : "Infaq Bebas";
   const namaRaw = document.getElementById("nama").value.trim();
   const anon = document.getElementById("anon").checked;
   const nama = anon ? "Anonim" : namaRaw;
-  const email = document.getElementById("email").value.trim();
   const telepon = document.getElementById("telepon").value.trim();
-  setBtnLoading(true);
-  try {
-    const res = await fetch("/.netlify/functions/payment", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nama, email, telepon, program, nominal: nominalDipilih }),
-    });
-    const data = await res.json();
-    if (!data.token) throw new Error(data.error || "Gagal mendapatkan token pembayaran.");
-    window.snap.pay(data.token, {
-      onSuccess: function (result) {
-        window.location.href = "/terima-kasih.html?order=" + data.orderId;
-      },
-      onPending: function (result) {
-        alert("Terima kasih! Silakan selesaikan pembayaran sesuai instruksi yang dikirim ke email Anda.");
-      },
-      onError: function (result) {
-        tampilError("Pembayaran gagal. Silakan coba lagi.");
-      },
-      onClose: function () {
-        console.log("Popup ditutup.");
-      },
-    });
-  } catch (err) {
-    tampilError("Terjadi kesalahan: " + err.message);
-  } finally {
-    setBtnLoading(false);
-  }
-}
+  const fmt = nominalDipilih.toLocaleString("id-ID");
 
-function setBtnLoading(loading) {
-  const btn = document.getElementById("btn-bayar");
-  document.getElementById("btn-text").style.display = loading ? "none" : "inline";
-  document.getElementById("btn-loader").style.display = loading ? "inline" : "none";
-  btn.disabled = loading;
+  // Tampilkan info rekening
+  const infoBox = document.getElementById("info-rekening");
+  infoBox.style.display = "block";
+  infoBox.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+  // Siapkan pesan WhatsApp
+  const pesan = `Assalamualaikum, saya ${nama} ingin berinfaq.\nProgram: ${program}\nNominal: Rp ${fmt}\nNo. HP: ${telepon}`;
+  document.getElementById("wa-btn").href = "https://wa.me/6281234567890?text=" + encodeURIComponent(pesan);
 }
