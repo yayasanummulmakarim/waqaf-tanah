@@ -71,5 +71,5 @@ function prosesBayar() {
 
   // Siapkan pesan WhatsApp
   const pesan = `Assalamualaikum, saya ${nama} ingin berinfaq.\nProgram: ${program}\nNominal: Rp ${fmt}\nNo. HP: ${telepon}`;
-  document.getElementById("wa-btn").href = "https://wa.me/6281234567890?text=" + encodeURIComponent(pesan);
+  document.getElementById("wa-btn").href = "https://wa.me/6282217259165?text=" + encodeURIComponent(pesan);
 }
