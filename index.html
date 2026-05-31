@@ -206,6 +206,47 @@
 
  <script src="script.js"></script>
 </script>
+const SHEET_ID = '1sNc1B7c_xvhJ2LRvzc05noGJWC4LmXFRBgLLBOkQDxA';
+const TARGET = 340750000;
+const HARGA_PER_METER = 250000;
+const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Sheet1`;
+
+fetch(url)
+  .then(r => r.text())
+  .then(text => {
+    const clean = text.replace(/^.*?\(/, '').replace(/\);?\s*$/, '');
+    const json = JSON.parse(clean);
+    const rows = json.table.rows;
+
+    let total = 0;
+    rows.forEach(row => {
+      const val = row.c[2];
+      if (val && val.v !== null) {
+        total += parseFloat(val.v) || 0;
+      }
+    });
+
+    const kurang = Math.max(TARGET - total, 0);
+    const pct = Math.min(Math.round((total / TARGET) * 100), 100);
+    const sisaMeter = Math.ceil(kurang / HARGA_PER_METER);
+
+    document.getElementById('prog-bar').style.width = pct + '%';
+    document.getElementById('prog-terkumpul').textContent = 'Rp ' + total.toLocaleString('id-ID') + ' terkumpul';
+    document.getElementById('prog-pct').textContent = pct + '%';
+    document.getElementById('info-terkumpul').textContent = 'Rp ' + total.toLocaleString('id-ID');
+    document.getElementById('info-kurang').textContent = 'Rp ' + kurang.toLocaleString('id-ID');
+    document.getElementById('info-meter').textContent = sisaMeter.toLocaleString('id-ID') + ' m² lagi';
+
+    if(document.getElementById('stat-terkumpul'))
+      document.getElementById('stat-terkumpul').textContent = 'Rp ' + (total/1000000).toFixed(1) + ' jt';
+    if(document.getElementById('stat-donatur'))
+      document.getElementById('stat-donatur').textContent = rows.length + ' donatur';
+  })
+  .catch(err => {
+    console.error('Error:', err);
+    document.getElementById('prog-terkumpul').textContent = 'Gagal memuat data';
+  });
+</script
 
 </body>
 </body>
