@@ -205,25 +205,20 @@
   </footer>
 
  <script src="script.js"></script>
-</script>
-const SHEET_ID = '1sNc1B7c_xvhJ2LRvzc05noGJWC4LmXFRBgLLBOkQDxA';
+<script>
+const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRdQdqegMUPU-CvisfxuqU1-cFUqvF4J3swb1bp0i05LrQseLuoRpAX4_UOAq75_t_Z-DDyItWCDb1L/pub?gid=0&single=true&output=csv';
 const TARGET = 340750000;
 const HARGA_PER_METER = 250000;
-const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Sheet1`;
 
-fetch(url)
+fetch(CSV_URL)
   .then(r => r.text())
   .then(text => {
-    const clean = text.replace(/^.*?\(/, '').replace(/\);?\s*$/, '');
-    const json = JSON.parse(clean);
-    const rows = json.table.rows;
-
+    const rows = text.trim().split('\n').slice(1); // skip header
     let total = 0;
     rows.forEach(row => {
-      const val = row.c[2];
-      if (val && val.v !== null) {
-        total += parseFloat(val.v) || 0;
-      }
+      const cols = row.split(',');
+      const nominal = parseFloat(cols[2]) || 0;
+      total += nominal;
     });
 
     const kurang = Math.max(TARGET - total, 0);
@@ -246,7 +241,7 @@ fetch(url)
     console.error('Error:', err);
     document.getElementById('prog-terkumpul').textContent = 'Gagal memuat data';
   });
-</script
+</script>
 
 </body>
 </html>
