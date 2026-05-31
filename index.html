@@ -207,13 +207,14 @@
  <script src="script.js"></script>
 <script>
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRdQdqegMUPU-CvisfxuqU1-cFUqvF4J3swb1bp0i05LrQseLuoRpAX4_UOAq75_t_Z-DDyItWCDb1L/pub?gid=0&single=true&output=csv';
+const PROXY = 'https://corsproxy.io/?' + encodeURIComponent(CSV_URL);
 const TARGET = 340750000;
 const HARGA_PER_METER = 250000;
 
-fetch(CSV_URL)
+fetch(PROXY)
   .then(r => r.text())
   .then(text => {
-    const rows = text.trim().split('\n').slice(1); // skip header
+    const rows = text.trim().split('\n').slice(1);
     let total = 0;
     rows.forEach(row => {
       const cols = row.split(',');
